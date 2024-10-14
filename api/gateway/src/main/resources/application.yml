@@ -1,0 +1,39 @@
+server:
+  port: 8080
+api:
+  prefix: /api/v1
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      globalcors:
+        cors-configurations:
+          "[/**]":
+            allowedOrigins: "*"
+            allowed-origin-patterns: "*"
+            allowedHeaders: "*"
+            allowedMethods: "*"
+      routes:
+      #============================  Auth route ============================#
+              - id: test_route
+                uri: https://youtube.com/**
+                predicates:
+                  - Path=/youtube/**
+                filters:
+                  - StripPrefix=2
+                  - AuthorizationFilter
+
+        #============================  Auth route ============================#
+#        - id: auth_route
+#          uri: ${services.user-service}
+#          predicates:
+#            - Path= ${api.prefix}/auth/**
+#          filters:
+#            - StripPrefix=2
+#            - RewritePath=/auth/, /user/auth/
+
+services:
+  user-service: ${USER_SERVICE_URL}
+  channel-service: ${CHANNEL_SERVICE_URL}
+  video-service: ${VIDEO_SERVICE_URL}
