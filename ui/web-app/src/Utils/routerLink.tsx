@@ -4,5 +4,5 @@ export enum AdminRouterLink {
 }
 
 export enum UserRouterLink {
-  Home = "",
+  HomePage = "",
 }
