@@ -202,3 +202,121 @@ export const IcEdit: React.FC<IconProps> = ({
     </svg>
   );
 };
+
+export const IcHeartOuline: React.FC<IconProps> = ({
+  width = "1rem",
+  height = "1rem",
+}) => {
+  return (
+    <svg
+      data-type="monochrome"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 48 48"
+      width={width}
+      height={height}
+      fill="none"
+      id="HeartOutline-monochrome"
+      style={{
+        height: "32px",
+        fontSize: "32px",
+        color: "#000000",
+        backgroundColor: "transparent",
+      }}
+    >
+      <path
+        fill="none"
+        stroke="currentColor"
+        stroke-width="3"
+        d="M13.8 4C6.5 4 2 10.5 2 15.8c0 11.5 12.9 22.2 22 29 9.1-6.8 22-17.5 22-29C46 10.5 41.5 4 34.2 4c-4.1 0-7.6 3.3-10.2 6.4C21.4 7.3 17.9 4 13.8 4"
+      ></path>
+    </svg>
+  );
+};
+export const IcHeartOutlineJob: React.FC<IconProps> = ({
+  width = "1rem",
+  height = "1rem",
+}) => {
+  return (
+    <svg
+      data-type="monochrome"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 48 48"
+      width={width}
+      height={height}
+      fill="none"
+      id="HeartOutline-monochrome"
+      style={{
+        height: "32px",
+        fontSize: "32px",
+        color: "#A30214",
+        backgroundColor: "transparent",
+      }}
+    >
+      <path
+        fill="none"
+        stroke="currentColor"
+        stroke-width="3"
+        d="M13.8 4C6.5 4 2 10.5 2 15.8c0 11.5 12.9 22.2 22 29 9.1-6.8 22-17.5 22-29C46 10.5 41.5 4 34.2 4c-4.1 0-7.6 3.3-10.2 6.4C21.4 7.3 17.9 4 13.8 4"
+      ></path>
+    </svg>
+  );
+};
+
+export const IcLocation: React.FC<IconProps> = ({
+  width = "0.7rem",
+  height = "0.7rem",
+}) => {
+  return (
+    <svg
+      data-type="monochrome"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 29 37"
+      width={width}
+      height={height}
+      fill="none"
+      id="Location-monochrome"
+      style={{
+        height: "32px",
+        fontSize: "32px",
+        color: "#000000",
+        backgroundColor: "transparent",
+      }}
+    >
+      <path
+        fill="currentColor"
+        d="M14.3.4C6.4.4 0 6.7 0 14.5c0 3.8 1.5 7.4 4 10.1l10.3 11.8 10.3-11.8c2.5-2.7 4-6.3 4-10.1C28.6 6.7 22.2.4 14.3.4m0 2.2c6.7 0 12.1 5.4 12.1 12 0 3.1-1.3 6.3-3.4 8.7l-8.7 9.9-8.7-9.9c-2.2-2.4-3.4-5.6-3.4-8.7 0-6.7 5.4-12 12.1-12"
+      ></path>
+      <path
+        fill="currentColor"
+        d="M14.3 19.9c-3.1 0-5.6-2.5-5.6-5.5s2.5-5.5 5.6-5.5c3.1 0 5.6 2.5 5.6 5.5 0 3.1-2.5 5.5-5.6 5.5"
+      ></path>
+    </svg>
+  );
+};
+export const IcCompany: React.FC<IconProps> = ({
+  width = "0.7rem",
+  height = "0.7rem",
+}) => {
+  return (
+    <svg
+      data-type="monochrome"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 23 25"
+      width={width}
+      height={height}
+      fill="none"
+      id="HouseOutline-monochrome"
+      style={{
+        height: "32px",
+        fontSize: "32px",
+        color: "#000000",
+        backgroundColor: "transparent",
+      }}
+    >
+      <path
+        fill="currentColor"
+        d="M21.188 23.142h-5.42v-5.115c0-1.23-.45-2.386-1.27-3.255a4.34 4.34 0 00-3.186-1.384 4.34 4.34 0 00-3.186 1.384 4.719 4.719 0 00-1.27 3.255v5.115h-5.42V9.559L11.313 1.7l9.876 7.858v13.583zm1.235-14.437L11.608.101A.55.55 0 0011.313 0a.575.575 0 00-.297.1L.202 8.706A.548.548 0 000 9.134v14.918c0 .275.236.526.496.526h7.3c.26 0 .497-.25.497-.526v-6.025c0-.863.312-1.669.878-2.27a2.92 2.92 0 012.141-.933 2.92 2.92 0 012.141.933c.567.601.879 1.407.879 2.27v6.025c0 .275.236.526.496.526h7.3c.26 0 .496-.25.496-.526V9.134a.552.552 0 00-.201-.429z"
+      ></path>
+    </svg>
+  );
+};
