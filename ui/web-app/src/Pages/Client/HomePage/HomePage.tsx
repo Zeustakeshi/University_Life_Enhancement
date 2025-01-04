@@ -1,13 +1,10 @@
-import CardProduct from "../../../Components/Card/CardProduct";
+import Category from "../../../Layouts/Client/Components/Header/Components/Category";
 
 const HomePage = () => {
   return (
     <div>
-      <div>HomePage</div>
-      <div className="flex flex-row w-full justify-between items-center">
-        <CardProduct type={0}/>
-        <CardProduct type={1}/>
-        <CardProduct type={2}/>
+      <div className="items-center justify-center mx-[150px]">
+        <Category />
       </div>
     </div>
   );
