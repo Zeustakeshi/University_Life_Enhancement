@@ -2,8 +2,8 @@ import { User } from "../../../../Types/user";
 import { Button, TableColumnsType } from "antd";
 import { Link } from "react-router-dom";
 
-const Columns = (showModalEdit: (
-  isOpen: boolean, data: User) => void,
+const Columns = (
+  showModalEdit: (isOpen: boolean, data: User) => void,
   showDeleteConfirm: (userId: string) => void
 ): TableColumnsType<User> => [
     {

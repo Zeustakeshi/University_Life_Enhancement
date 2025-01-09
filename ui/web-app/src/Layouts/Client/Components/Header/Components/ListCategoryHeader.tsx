@@ -1,90 +1,119 @@
-import  { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
+import { IcArrow_Down, IcArrow_Right, IcBar } from "../../../../../Common/Icons/Icons";
 
-const ListCategoryHeader = () => {
+interface MenuItem {
+  id: string;
+  title: string;
+  path: string;
+  subMenu?: MenuItem[];
+}
+
+const menuData: MenuItem[] = [
+  {
+    id: "real-estate",
+    title: "Bất động sản",
+    path: "/real-estate",
+    subMenu: [
+      { id: "buy-sell", title: "Mua bán", path: "/real-estate/buy-sell" },
+      { id: "rent", title: "Cho thuê", path: "/real-estate/rent" },
+      { id: "projects", title: "Dự án", path: "/real-estate/projects" },
+    ],
+  },
+  {
+    id: "vehicles",
+    title: "Xe cộ",
+    path: "/vehicles",
+    subMenu: [
+      { id: "cars", title: "Ô tô", path: "/vehicles/cars" },
+      { id: "motorbikes", title: "Xe máy", path: "/vehicles/motorbikes" },
+      { id: "bicycles", title: "Xe đạp", path: "/vehicles/bicycles" },
+    ],
+  },
+  {
+    id: "electronics",
+    title: "Đồ điện tử",
+    path: "/electronics",
+  },
+];
+
+const ListCategoryHeader: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [subMenuOpen, setSubMenuOpen] = useState("");
+  const [hoveredMenu, setHoveredMenu] = useState<string | null>(null);
+  const menuRef = useRef<HTMLDivElement | null>(null);
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        menuRef.current &&
+        buttonRef.current &&
+        !menuRef.current.contains(event.target as Node) &&
+        !buttonRef.current.contains(event.target as Node)
+      ) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleClickButton = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const handleMouseEnterMenu = (id: string) => {
+    setHoveredMenu(id);
+  };
+
+  const handleMouseLeaveMenu = () => {
+    setHoveredMenu(null);
+  };
 
   return (
-    <button
-      onClick={() => setIsMenuOpen(!isMenuOpen)}
-      onMouseEnter={() => setSubMenuOpen("Danh mục")}
-      onMouseLeave={() => setSubMenuOpen("")}
-      className="relative w-[120px] border border-gray-300 bg-white text-sm
-       text-lg px-2 py-2 font-bold rounded-lg shadow-md
-        hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-    >
-      Danh Mục
-      {isMenuOpen && (
-        <div className="absolute top-full right-0 mt-1 left-0 w-[200px] rounded-lg p-3 bg-white shadow-lg">
-          <div className="relative group">
-            <a
-              href=""
-              className="block py-1 text-gray-700 hover:bg-gray-200 px-4 rounded-md"
-            >
-              Bất động sản
-            </a>
-            <div
-              className={`absolute left-full top-0 w-[200px] p-3 bg-white shadow-lg rounded-lg opacity-0 ${
-                subMenuOpen === "Danh mục" ? "opacity-100" : ""
-              } transform scale-x-0 group-hover:scale-x-100 origin-left duration-200 ease-in-out`}
-            >
-              <a
-                href=""
-                className="block py-1 text-gray-700 hover:bg-gray-200 px-4 rounded-md"
-              >
-                Nhà ở
-              </a>
-              <a
-                href=""
-                className="block py-1 text-gray-700 hover:bg-gray-200 px-4 rounded-md"
-              >
-                Căn hộ
-              </a>
-              <a
-                href=""
-                className="block py-1 text-gray-700 hover:bg-gray-200 px-4 rounded-md"
-              >
-                Đất nền
-              </a>
-            </div>
-          </div>
-          {/* Menu con cho Xe Cộ */}
-          <div className="relative group">
-            <a
-              href=""
-              className="block py-1 text-gray-700 hover:bg-gray-200 px-4 rounded-md"
-            >
-              Xe Cộ
-            </a>
-            <div
-              className={`absolute left-full top-0 w-[200px] p-3 bg-white shadow-lg rounded-lg opacity-0 ${
-                subMenuOpen === "Danh mục" ? "opacity-100" : ""
-              } transform scale-x-0 group-hover:scale-x-100 origin-left duration-200 ease-in-out`}
-            >
-              <a
-                href=""
-                className="block py-1 text-gray-700 hover:bg-gray-200 px-4 rounded-md"
-              >
-                Ô tô
-              </a>
-              <a
-                href=""
-                className="block py-1 text-gray-700 hover:bg-gray-200 px-4 rounded-md"
-              >
-                Xe máy
-              </a>
-            </div>
-          </div>
-          {/* Mục không có menu con */}
-          <a
-            href=""
-            className="block py-1 text-gray-700 hover:bg-gray-200 px-4 rounded-md"
+    <div className="relative" ref={menuRef}>
+      <div className="flex flex-row justify-center items-center">
+        <IcBar width="1.5em" height="1.5em" />
+        <button
+          className=" text-neutrals-black px-4 py-2"
+          onClick={handleClickButton}
+          ref={buttonRef}
+        >
+          Danh mục
+        </button>
+        <IcArrow_Down width="1.5em" height="1.5em" />
+      </div>
+
+      <ul className={`absolute bg-white shadow-lg mt-2 w-48 ${isMenuOpen ? "block" : "hidden"}`}>
+        {menuData.map((menuItem) => (
+          <li
+            key={menuItem.id}
+            className="relative"
+            onMouseEnter={() => handleMouseEnterMenu(menuItem.id)}
+            onMouseLeave={handleMouseLeaveMenu}
           >
-            Đồ điện tử
-          </a>
-        </div>
-      )}
-    </button>
+            <Link
+              to={menuItem.path}
+              className="block px-4 py-2 hover:bg-gray-100 cursor-pointer flex justify-between items-center"
+            >
+              {menuItem.title}
+              {menuItem.subMenu && <IcArrow_Right width="1.5em" height="1.5em" />}
+            </Link>
+
+            {menuItem.subMenu && hoveredMenu === menuItem.id && (
+              <ul className="absolute left-full top-0 bg-white shadow-lg mt-0 w-48">
+                {menuItem.subMenu.map((subItem) => (
+                  <li key={subItem.id} className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                    <Link to={subItem.path}>{subItem.title}</Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 };
 

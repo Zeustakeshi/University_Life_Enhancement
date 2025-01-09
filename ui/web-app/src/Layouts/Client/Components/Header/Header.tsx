@@ -8,10 +8,14 @@ import {
   IcNotification,
 } from "../../../../Common/Icons/Icons";
 import ListCategoryHeader from "./Components/ListCategoryHeader";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [ckAccount, setCkAccount] = useState<boolean>(false);
-
+  const navigate = useNavigate();
+  const handleLoginButton = () => {
+    navigate("/Login");
+  };
   return (
     <>
       <header>
@@ -106,15 +110,12 @@ const Header = () => {
         <div
           className={`absolute right-[150px] shadow-md mt-[1%] flex-col justify-center items-center`}
         >
-          <div className="px-8 py-2 text-left">
-            <button
-              onClick={() => {
-                alert("hi");
-              }}
-            >
-              Đăng nhập/ đăng ký
-            </button>
-          </div>
+          {/* <div className="px-8 py-2 text-left">
+            <LoginForm />
+          </div> */}
+          <button className="px-8 py-2 text-left" onClick={handleLoginButton}>
+            <p>Đăng Nhập/ Đăng Ký</p>
+          </button>
           <div className="px-8 py-2 text-left">
             <p>Quản lý đơn hàng</p>
           </div>
