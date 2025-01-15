@@ -5,4 +5,6 @@ export enum AdminRouterLink {
 
 export enum UserRouterLink {
   HomePage = "",
+  LoginPage = "/login",
+  RegisterPage = "/register",
 }
