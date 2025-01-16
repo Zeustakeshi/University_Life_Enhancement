@@ -28,7 +28,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     properties:
       hibernate:
         naming:
@@ -68,3 +68,14 @@ jwt:
   valid-duration: 3600 # in seconds
   refreshable-duration: 36000 # in seconds
   k-id: ${K_ID}
+
+app:
+  jwt:
+    issuer: "auth"
+    access-token:
+      secret-key: ${ACCESS_TOKEN_KEY:"k4t73biCGHsscsd4MwXBaAtfRJJRC4+X/5Z2yN4xe7PjEGoLwqieZeRgkjJgAq1W"}
+      expiration: 3600
+    refresh-token:
+      secret-key: ${REFRESH_TOKEN_KEY:"k4t73biCGHsscsd4MwXBaAtfRJJRC4+X/5Z2yN4xe7PjEGoLwqieZeRgkjJgAq1W"}
+      expiration: 10600
+

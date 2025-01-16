@@ -23,8 +23,8 @@ import java.util.UUID;
 public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
-    private final UserMapper userMapper;
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
     private final VerificationTokenRepository tokenRepository;
     private final AuthenticationService authService;
     public UserResponse createUser(UserRequest request) throws MessagingException {

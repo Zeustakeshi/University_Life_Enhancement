@@ -11,3 +11,4 @@ public interface UserMapper {
 
     UserResponse userResponse(User user);
 }
+

@@ -99,7 +99,6 @@ public class AuthenticationService {
                             request.getPassword()
                     )
             );
-
             var user = userRepository.findByEmail(request.getEmail())
                     .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
 

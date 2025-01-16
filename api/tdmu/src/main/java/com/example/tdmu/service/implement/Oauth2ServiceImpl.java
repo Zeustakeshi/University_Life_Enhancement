@@ -36,6 +36,7 @@ public class Oauth2ServiceImpl implements Oauth2Service {
     private final TokenService tokenService;
 
 
+
     @Override
     public Map<String, Object> handleCallback(String code) {
         // Tạo request body để đổi mã code lấy token
@@ -102,6 +103,24 @@ public class Oauth2ServiceImpl implements Oauth2Service {
         } catch (Exception e) {
             throw new RuntimeException("Error during OAuth2 callback handling: " + e.getMessage(), e);
         }
+    }
+
+    @Override
+    public Map<String, Object> getUserInfo(String accessToken) {
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(accessToken);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        ResponseEntity<Map> response = restTemplate.exchange(
+                "https://openidconnect.googleapis.com/v1/userinfo",
+                HttpMethod.GET,
+                entity,
+                Map.class
+        );
+
+        return response.getBody();
     }
 
     @Override

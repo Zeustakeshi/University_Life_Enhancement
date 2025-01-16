@@ -1,16 +1,11 @@
 package com.example.tdmu.controller;
 
-import com.example.tdmu.dto.request.ApiResponse;
+import com.example.tdmu.dto.response.ApiResponse;
 import com.example.tdmu.dto.request.AuthenticationRequest;
 import com.example.tdmu.dto.request.UserRequest;
 import com.example.tdmu.dto.response.AuthenticationResponse;
 import com.example.tdmu.dto.response.UserResponse;
-import com.example.tdmu.entity.User;
-import com.example.tdmu.service.AuthenticationService;
-import com.example.tdmu.service.EmailVerificationService;
-import com.example.tdmu.service.JwtService;
-import com.example.tdmu.service.UserService;
-import com.nimbusds.jose.KeyLengthException;
+import com.example.tdmu.service.*;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -19,11 +14,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 @Slf4j
 @RestController
@@ -31,10 +22,12 @@ import java.util.Map;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AuthController {
+
     private final UserService userService;
-    private final JwtService jwtService;
+    private final Oauth2Service oauth2Service;
     private final EmailVerificationService emailVerificationService;
     private final AuthenticationService authenticationService;
+
     @GetMapping("/verify")
     public ResponseEntity<String> verifyEmail(@RequestParam(value = "token", required = true) String token) {
         if (token == null || token.isEmpty()) {
@@ -44,69 +37,48 @@ public class AuthController {
         String message = emailVerificationService.verifyEmail(token);
         return ResponseEntity.ok(message);
     }
+
     @PostMapping("/register")
-    public ResponseEntity<ApiResponse<UserResponse>> register(@RequestBody @Valid UserRequest request) throws MessagingException {
+    public ApiResponse<?> register(@RequestBody @Valid UserRequest request) throws MessagingException {
         try {
             UserResponse userResponse = userService.createUser(request);
             log.info("User created successfully: {}", userResponse);
 
-            ApiResponse<UserResponse> apiResponse = ApiResponse.<UserResponse>builder()
-                    .result(userResponse)
-                    .build();
-
-            return ResponseEntity.ok(apiResponse);
+            return ApiResponse.success(userResponse);
         } catch (MessagingException e) {
             log.error("Error occurred while sending verification email", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                    ApiResponse.<UserResponse>builder()
-                            .message("Error sending verification email")
-                            .build());
+            return ApiResponse.error("Error sending verification email");
         } catch (Exception e) {
             log.error("Unexpected error occurred", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                    ApiResponse.<UserResponse>builder()
-                            .message("Unexpected error occurred")
-                            .build());
+            return ApiResponse.error("Unexpected error occurred");
         }
     }
 
     @PostMapping("/login")
-    public ResponseEntity<ApiResponse<AuthenticationResponse>> authenticate(
-            @RequestBody @Valid AuthenticationRequest request
-    )
+    public ApiResponse<AuthenticationResponse> authenticate(
+            @RequestBody @Valid AuthenticationRequest request)
     {
         try {
-            return ResponseEntity.ok(
-                    ApiResponse.<AuthenticationResponse>builder()
-                            .result(authenticationService.login(request))
-                            .build()
-            );
+            return ApiResponse.success(authenticationService.login(request));
         }
         catch (Exception e){
             log.error("Unexpected error occurred", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                    ApiResponse.<AuthenticationResponse>builder()
-                            .message("Unexpected error occurred")
-                            .build());
+            return ApiResponse.error("Unexpected error occurred");
         }
     }
 
-    @GetMapping("/google")
-    public ResponseEntity<?> googleLogin(Authentication authentication) {
-        OAuth2AuthenticationToken authToken = (OAuth2AuthenticationToken) authentication;
-        Map<String, Object> attributes = authToken.getPrincipal().getAttributes();
+    @GetMapping("/authorize/google")
+    public ApiResponse<?> getGoogleAuthLink() {
+        return ApiResponse.success(oauth2Service.getGoogleAuthLink());
+    }
 
+    @GetMapping("/oauth2/userinfo")
+    public ApiResponse<?> getUserInfo(@RequestParam String accessToken) {
+        return ApiResponse.success(oauth2Service.getUserInfo(accessToken));
+    }
 
-
-        String email = (String) attributes.get("email");
-
-        User user = userService.getUser(email);
-        if(user == null){
-            return ResponseEntity.ok("Not found");
-        }
-
-        String jwtToken = jwtService.generateToken(user);
-
-        return ResponseEntity.ok(jwtToken);
+    @GetMapping("/oauth2/callback")
+    public ApiResponse<?> handleCallback(@RequestParam String code) {
+        return ApiResponse.success(oauth2Service.handleCallback(code));
     }
 }

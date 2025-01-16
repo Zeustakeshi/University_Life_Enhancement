@@ -8,5 +8,6 @@ public interface Oauth2Service {
 
     GoogleAuthUrlResponse getGoogleAuthLink();
     Map<String, Object> handleCallback(String code);
+    Map<String, Object> getUserInfo(String accessToken);
 
 }
